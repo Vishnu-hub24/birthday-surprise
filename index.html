@@ -1,347 +1,93 @@
-<!DOCTYPE html>  
-<html>  
-<head>  
-<title>Secret Birthday Surprise</title>  
-  
-<style>  
-  
-body{  
-background:black;  
-color:#00ff9d;  
-font-family:monospace;  
-text-align:center;  
-overflow:hidden;  
-}  
-  
-.screen{  
-display:none;  
-padding-top:120px;  
-}  
-  
-.active{  
-display:block;  
-}  
-  
-img{  
-width:230px;  
-margin:10px;  
-border-radius:12px;  
-}  
-  
-button{  
-padding:12px 25px;  
-font-size:18px;  
-background:pink;  
-border:none;  
-border-radius:8px;  
-cursor:pointer;  
-color:white;  
-}  
-  
-input{  
-padding:10px;  
-font-size:16px;  
-border-radius:6px;  
-border:none;  
-}  
-  
-/* balloons */  
-  
-.balloon{  
-position:absolute;  
-bottom:-100px;  
-width:40px;  
-height:50px;  
-border-radius:50%;  
-animation:float 8s linear infinite;  
-}  
-  
-@keyframes float{  
-0%{transform:translateY(0)}  
-100%{transform:translateY(-1000px)}  
-}  
-  
-/* fireworks */  
-  
-.firework{  
-position:absolute;  
-width:6px;  
-height:6px;  
-background:white;  
-border-radius:50%;  
-animation:explode 1s ease-out forwards;  
-}  
-  
-@keyframes explode{  
-0%{transform:scale(1);opacity:1}  
-100%{transform:scale(8);opacity:0}  
-}  
-  
-/* cake (NO ROTATION NOW) */  
-  
-.cake{  
-font-size:80px;  
-margin-top:20px;  
-position:relative;  
-cursor:pointer;  
-}  
-  
-/* candle flame */  
-  
-.flame{  
-position:absolute;  
-top:-20px;  
-left:50%;  
-transform:translateX(-50%);  
-font-size:25px;  
-animation:flicker 0.5s infinite alternate;  
-}  
-  
-@keyframes flicker{  
-0%{opacity:1; transform:translateX(-50%) scale(1)}  
-100%{opacity:0.6; transform:translateX(-50%) scale(1.2)}  
-}  
-  
-</style>  
-</head>  
-  
-<body>  
-  
-<audio id="bgMusic" loop>  
-<source src="music.mp3">  
-</audio>  
-  
-<!-- HACKER SCREEN -->  
-  
-<div id="s0" class="screen active">  
-<h2 id="hackText"></h2>  
-</div>  
-  
-<!-- ENTER NAME -->  
-  
-<div id="s1" class="screen">  
-  
-<h2>Enter Your Name</h2>  
-  
-<input id="nameInput" placeholder="Type your name">  
-  
-<br><br>  
-  
-<button onclick="start()">Start Surprise 🎁</button>  
-  
-</div>  
-  
-<!-- GREETING -->  
-  
-<div id="s2" class="screen">  
-  
-<h1 id="hello"></h1>  
-  
-<p>I have something special for you ❤️</p>  
-  
-<button onclick="next(3)">See Memories</button>  
-  
-</div>  
-  
-<!-- PHOTOS -->  
-  
-<div id="s3" class="screen">  
-  
-<h1>Our Memories 📸</h1>  
-  
-<div id="photos"></div>  
-  
-<br><br>  
-  
-<button onclick="next(4)">Next</button>  
-  
-</div>  
-  
-<!-- GIFT -->  
-  
-<div id="s4" class="screen">  
-  
-<h1>🎁 A Gift For You</h1>  
-  
-<p>Click to open your surprise</p>  
-  
-<button onclick="openGift()">Open Gift 🎁</button>  
-  
-</div>  
-  
-<!-- FINAL -->  
-  
-<div id="s5" class="screen">  
-  
-<h1 style="color:pink">🎉 HAPPY BIRTHDAY 🎉</h1>  
-  
-<h2>You are my best friend forever ❤️</h2>  
-  
-<div class="cake" onclick="blowCandles()">  
-🎂  
-<div class="flame" id="flame">🔥</div>  
-</div>  
-  
-<p id="blowText">Tap the cake to blow candles 🎂</p>  
-  
-<p>  
-Thank you for all the memories and happiness you bring into my life.  
-</p>  
-  
-</div>  
-  
-<script>  
-  
-/* screen change */  
-  
-function next(n){  
-  
-document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"))  
-  
-document.getElementById("s"+n).classList.add("active")  
-  
-}  
-  
-/* start */  
-  
-function start(){  
-  
-let name=document.getElementById("nameInput").value  
-  
-document.getElementById("hello").innerHTML="Hello "+name+" ❤️"  
-  
-document.getElementById("bgMusic").play()  
-  
-next(2)  
-  
-}  
-  
-/* gift open */  
-  
-function openGift(){  
-  
-fireworks()  
-  
-next(5)  
-  
-}  
-  
-/* blow candles */  
-  
-function blowCandles(){  
-  
-document.getElementById("flame").style.display="none"  
-  
-document.getElementById("blowText").innerHTML =  
-"✨ Wish made... Happy Birthday ❤️"  
-  
-}  
-  
-/* hacker typing */  
-  
-let lines=[  
-"Connecting to memory database...",  
-"Scanning friendship data...",  
-"Friendship level: 100%",  
-"Preparing birthday surprise..."  
-]  
-  
-let i=0  
-  
-function type(){  
-  
-if(i<lines.length){  
-  
-document.getElementById("hackText").innerHTML+=lines[i]+"<br>"  
-  
-i++  
-  
-setTimeout(type,1000)  
-  
-}else{  
-  
-setTimeout(()=>next(1),2000)  
-  
-}  
-  
-}  
-  
-type()  
-  
-/* balloons */  
-  
-for(let i=0;i<20;i++){  
-  
-let b=document.createElement("div")  
-  
-b.className="balloon"  
-  
-b.style.left=Math.random()*100+"%"  
-  
-b.style.background="hsl("+Math.random()*360+",70%,60%)"  
-  
-b.style.animationDuration=(5+Math.random()*5)+"s"  
-  
-document.body.appendChild(b)  
-  
-}  
-  
-/* photos */  
-  
-let imgs=[  
-"photo1.jpg",  
-"photo2.jpg",  
-"photo3.jpg",  
-"photo4.jpg",  
-"photo5.jpg",  
-"photo6.jpg"  
-]  
-  
-let p=0  
-  
-function showPhoto(){  
-  
-if(p<imgs.length){  
-  
-let img=document.createElement("img")  
-  
-img.src=imgs[p]  
-  
-document.getElementById("photos").appendChild(img)  
-  
-p++  
-  
-setTimeout(showPhoto,1500)  
-  
-}  
-  
-}  
-  
-setTimeout(showPhoto,5000)  
-  
-/* fireworks */  
-  
-function fireworks(){  
-  
-for(let i=0;i<30;i++){  
-  
-let f=document.createElement("div")  
-  
-f.className="firework"  
-  
-f.style.left=Math.random()*100+"%"  
-  
-f.style.top=Math.random()*100+"%"  
-  
-document.body.appendChild(f)  
-  
-setTimeout(()=>f.remove(),1000)  
-  
-}  
-  
-}  
-  
-</script>  
-  
-</body>  
-  </html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Secret Birthday Surprise</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<audio id="bgMusic" loop>
+<source src="music.mp3">
+</audio>
+
+<!-- HACKER SCREEN -->
+<div id="s0" class="screen active">
+<h2 id="hackText"></h2>
+</div>
+
+<!-- ENTER NAME -->
+<div id="s1" class="screen">
+
+<h2>Enter Your Name</h2>
+
+<input id="nameInput" placeholder="Type your name">
+
+<br><br>
+
+<button onclick="start()">Start Surprise 🎁</button>
+
+</div>
+
+<!-- GREETING -->
+<div id="s2" class="screen">
+
+<h1 id="hello"></h1>
+
+<p>I have something special for you ❤️</p>
+
+<button onclick="nextPage(3)">See Memories</button>
+
+</div>
+
+<!-- PHOTOS -->
+<div id="s3" class="screen">
+
+<h1>Our Memories 📸</h1>
+
+<div id="photos"></div>
+
+<br><br>
+
+<button onclick="nextPage(4)">Next</button>
+
+</div>
+
+<!-- GIFT -->
+<div id="s4" class="screen">
+
+<h1>🎁 A Gift For You</h1>
+
+<p>Click to open your surprise</p>
+
+<button onclick="openGift()">Open Gift 🎁</button>
+
+</div>
+
+<!-- FINAL -->
+<div id="s5" class="screen">
+
+<h1 style="color:pink">🎉 HAPPY BIRTHDAY 🎉</h1>
+
+<h2>You are my best friend forever ❤️</h2>
+
+<div class="cake" onclick="blowCandles()">
+🎂
+<div class="flame" id="flame">🔥</div>
+</div>
+
+<p id="blowText">Tap the cake to blow candles 🎂</p>
+
+<p>
+Thank you for all the memories and happiness you bring into my life.
+</p>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
