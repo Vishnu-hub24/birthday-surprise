@@ -3,7 +3,7 @@ function nextPage(n){
 document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"))
 document.getElementById("s"+n).classList.add("active")
 
-// start photo animation on page 3
+// start slideshow only here
 if(n === 3){
 document.getElementById("photos").innerHTML = ""
 p = 0
@@ -13,9 +13,14 @@ showPhoto()
 }
 
 function start(){
+
 let name=document.getElementById("nameInput").value
 document.getElementById("hello").innerHTML="Hello "+"Swathi"+" ❤️"
-document.getElementById("bgMusic").play()
+
+// start music here
+let music=document.getElementById("bgMusic")
+music.play().catch(()=>{})
+
 nextPage(2)
 }
 
@@ -26,11 +31,10 @@ nextPage(5)
 
 function blowCandles(){
 document.getElementById("flame").style.display="none"
-document.getElementById("blowText").innerHTML =
-"✨ Wish made... Happy Birthday ❤️"
+document.getElementById("blowText").innerHTML="✨ Wish made... Happy Birthday ❤️"
 }
 
-/* hacker typing */
+/* hacker intro */
 
 let lines=[
 "Connecting to memory database...",
@@ -50,21 +54,9 @@ setTimeout(type,1000)
 setTimeout(()=>nextPage(1),2000)
 }
 }
-
 type()
 
-/* balloons */
-
-for(let i=0;i<20;i++){
-let b=document.createElement("div")
-b.className="balloon"
-b.style.left=Math.random()*100+"%"
-b.style.background="hsl("+Math.random()*360+",70%,60%)"
-b.style.animationDuration=(5+Math.random()*5)+"s"
-document.body.appendChild(b)
-}
-
-/* photos auto every 2 sec */
+/* slideshow */
 
 let imgs=[
 "photo1.jpg",
@@ -79,19 +71,41 @@ let p=0
 
 function showPhoto(){
 
+let container=document.getElementById("photos")
+
 if(p < imgs.length){
+
+container.innerHTML=""
 
 let img=document.createElement("img")
 img.src=imgs[p]
+img.className="slide-img"
 
-document.getElementById("photos").appendChild(img)
+container.appendChild(img)
 
 p++
 
 setTimeout(showPhoto,2000)
 
+}else{
+
+setTimeout(()=>{
+nextPage(4)
+},1000)
+
 }
 
+}
+
+/* balloons */
+
+for(let i=0;i<20;i++){
+let b=document.createElement("div")
+b.className="balloon"
+b.style.left=Math.random()*100+"%"
+b.style.background="hsl("+Math.random()*360+",70%,60%)"
+b.style.animationDuration=(5+Math.random()*5)+"s"
+document.body.appendChild(b)
 }
 
 /* fireworks */
